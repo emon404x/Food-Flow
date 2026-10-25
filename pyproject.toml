@@ -1,0 +1,8 @@
+[project]
+name = "foodflow"
+version = "1.0.0"
+description = "FoodFlow - Expiry-Aware Food Donation Platform"
+requires-python = ">=3.10"
+
+[tool.vercel]
+entrypoint = "config.wsgi:application"

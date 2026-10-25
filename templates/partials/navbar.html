@@ -1,0 +1,50 @@
+{% load static %}
+<nav class="navbar">
+    <div class="container navbar-container"
+         style="max-width: 1500px; padding-left: 20px; padding-right: 20px;">
+        <a href="{% url 'home' %}" class="brand" aria-label="FoodFlow - Home">
+            <img src="{% static 'images/logo.svg' %}" alt="FoodFlow Logo" class="brand-logo-img" width="36" height="36">
+            <span class="brand-name">
+                <span class="brand-name-food">Food</span><span class="brand-name-flow">Flow</span>
+            </span>
+        </a>
+
+        <ul class="nav-links">
+            {% if user.is_authenticated %}
+                {% if user.is_donor %}
+                    <!-- Donor Navigation -->
+                    <li><a href="{% url 'accounts:donor_dashboard' %}" class="nav-link">Dashboard</a></li>
+                    <li><a href="{% url 'listings:donor_listings' %}" class="nav-link">My Listings</a></li>
+                    <li><a href="{% url 'claims:my_claims' %}" class="nav-link">Food Claims</a></li>
+                    <li><a href="{% url 'listings:donor_listing_create' %}" class="nav-link btn btn-primary btn-sm" style="color: white;">+ Donate Food</a></li>
+                    <li><a href="{% url 'claims:verify_pickup' %}" class="nav-link">Verify Pickup</a></li>
+                {% elif user.is_recipient %}
+                    <!-- Recipient Navigation -->
+                    <li><a href="{% url 'accounts:recipient_dashboard' %}" class="nav-link">Dashboard</a></li>
+                    <li><a href="{% url 'listings:browse_food' %}" class="nav-link">Browse Food</a></li>
+                    <li><a href="{% url 'claims:my_claims' %}" class="nav-link">My Claims</a></li>
+                    <li>
+                        <a href="{% url 'notifications:notification_list' %}" class="nav-link">
+                            Notifications
+                            <span id="navbar-unread-badge" class="badge-counter" {% if unread_notifications_count == 0 %}style="display: none;"{% endif %}>
+                                {{ unread_notifications_count }}
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                <!-- Shared Authenticated Links -->
+                <li><a href="{% url 'accounts:profile' %}" class="nav-link">Profile</a></li>
+                {% if user.is_staff %}
+                    <li><a href="{% url 'admin:index' %}" class="nav-link">Admin Panel</a></li>
+                {% endif %}
+                <li><a href="{% url 'accounts:logout' %}" class="nav-link btn btn-secondary btn-sm">Logout</a></li>
+            {% else %}
+                <!-- Public / Guest Navigation (Guests see ONLY Home, Login, Register) -->
+                <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                <li><a href="{% url 'accounts:login' %}" class="nav-link">Login</a></li>
+                <li><a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

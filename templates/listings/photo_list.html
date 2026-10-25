@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Photos — FoodFlow{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="color: var(--green-700); margin-bottom: 0.5rem;">
+                Manage Food Photos
+            </h2>
+
+            <p style="color: var(--grey-500);">
+                {{ listing.food_name }} · {{ photos|length }} of 5 photos
+            </p>
+        </div>
+
+        <a href="{% url 'listings:donor_listing_detail' pk=listing.pk %}"
+           class="btn btn-secondary">
+            Back to Listing
+        </a>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+        {% if photos|length < 5 %}
+            <a href="{% url 'listings:donor_photo_add' listing_id=listing.pk %}"
+               class="btn btn-primary">
+                Add Photo
+            </a>
+        {% else %}
+            <p class="form-help">
+                You have reached the limit of 5 photos.
+                Delete a photo to add another.
+            </p>
+        {% endif %}
+
+        <p class="form-help" style="margin-top: 0.75rem;">
+            The first photo is used as the listing cover.
+            You can replace a photo or edit its caption.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1.5rem;">
+        {% for photo in photos %}
+            <div class="card" style="overflow: hidden;">
+                <img src="{{ photo.image.url }}"
+                     alt="{{ photo.caption|default:listing.food_name }}"
+                     loading="lazy"
+                     style="display: block; width: 100%; height: 220px; object-fit: cover;">
+
+                <div class="card-body">
+                    {% if forloop.first %}
+                        <span class="badge badge-available">
+                            Cover Photo
+                        </span>
+                    {% endif %}
+
+                    <p style="margin: 0.75rem 0 1rem; color: var(--grey-700); overflow-wrap: anywhere;">
+                        {{ photo.caption|default:"No caption added." }}
+                    </p>
+
+                    <div style="display: flex; gap: 0.75rem;">
+                        <a href="{% url 'listings:donor_photo_edit' photo_id=photo.pk %}"
+                           class="btn btn-outline btn-sm">
+                            Edit
+                        </a>
+
+                        <a href="{% url 'listings:donor_photo_delete' photo_id=photo.pk %}"
+                           class="btn btn-outline btn-sm"
+                           style="color: var(--red-600); border-color: var(--red-600);">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="card">
+                <div class="card-body" style="text-align: center; padding: 2rem;">
+                    <h3 style="color: var(--green-700); margin-bottom: 0.75rem;">
+                        No photos yet
+                    </h3>
+
+                    <p style="color: var(--grey-500);">
+                        Use Add Photo to upload a food photo from your PC.
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Donor Dashboard — FoodFlow{% endblock %}
+
+{% block content %}
+<!-- Donor welcome banner -->
+<div style="
+    margin-bottom: 2rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border-radius: 22px;
+    background: #173f35;
+">
+
+    <p style="
+        margin: 0 0 0.8rem;
+        color: #bedcc5;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+    ">
+        DONOR DASHBOARD
+    </p>
+
+    <h1 style="
+        margin: 0 0 1rem;
+        color: #ffffff;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 700;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    ">
+        Welcome, {{ request.user.full_name }}
+    </h1>
+
+    <p style="
+        max-width: 800px;
+        margin: 0;
+        color: #dce9df;
+        font-size: 1rem;
+        line-height: 1.85;
+    ">
+        Share your surplus food, manage your donation listings,
+        and verify recipient pickups. Your thoughtful
+        contributions can help reduce waste and support
+        your community.
+    </p>
+
+    <div style="margin-top: 1.25rem;">
+        {% if donor.is_verified %}
+            <span style="
+                display: inline-block;
+                padding: 0.35rem 0.8rem;
+                border: 1px solid #91be9f;
+                border-radius: 30px;
+                background: #254f3f;
+                color: #e3f4dd;
+                font-size: 0.8rem;
+                font-weight: 600;
+            ">
+                ✓ Verified Donor
+            </span>
+        {% else %}
+            <span style="
+                display: inline-block;
+                padding: 0.35rem 0.8rem;
+                border: 1px solid #d9bd78;
+                border-radius: 30px;
+                background: #50462d;
+                color: #fff0c2;
+                font-size: 0.8rem;
+                font-weight: 600;
+            ">
+                Verification Pending
+            </span>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Metrics Overview -->
+<div class="grid grid-4" style="margin-bottom: 2.5rem;">
+    <div class="stat-card">
+        <span class="stat-value">{{ available_count }}</span>
+        <span class="stat-label">Available Donations</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ claimed_count }}</span>
+        <span class="stat-label">Pending Claim Pickups</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ completed_count }}</span>
+        <span class="stat-label">Completed Rescues</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ total_listings }}</span>
+        <span class="stat-label">Total Listings</span>
+    </div>
+</div>
+
+<!-- Pending Pickups Alert / List -->
+{% if pending_pickups %}
+<div class="card" style="margin-bottom: 2.5rem; border-left: 4px solid var(--amber-600);">
+    <div class="card-header">
+        <h3 class="card-title" style="color: var(--amber-600);">⚠️ Pending Handover / Pickups Awaiting Verification</h3>
+        <a href="{% url 'claims:verify_pickup' %}" class="btn btn-outline btn-sm">Verify Pickup &rarr;</a>
+    </div>
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.95rem;">
+            <thead>
+                <tr style="text-align: left; border-bottom: 2px solid var(--grey-200); color: var(--grey-700);">
+                    <th style="padding: 0.75rem 0.5rem;">Food Item</th>
+                    <th style="padding: 0.75rem 0.5rem;">Reserved Qty</th>
+                    <th style="padding: 0.75rem 0.5rem;">Recipient</th>
+                    <th style="padding: 0.75rem 0.5rem;">Pickup Deadline</th>
+                    <th style="padding: 0.75rem 0.5rem;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for claim in pending_pickups %}
+                <tr style="border-bottom: 1px solid var(--grey-200);">
+                    <td style="padding: 0.75rem 0.5rem; font-weight: 600;">{{ claim.listing.food_name }}</td>
+                    <td style="padding: 0.75rem 0.5rem;">{{ claim.claimed_quantity|floatformat:2 }} {{ claim.listing.unit }}</td>
+                    <td style="padding: 0.75rem 0.5rem;">{{ claim.recipient.user.full_name|default:claim.recipient.user.username }}</td>
+                    <td style="padding: 0.75rem 0.5rem; color: var(--red-600); font-weight: 600;">
+                        {{ claim.pickup_deadline|date:"M d, h:i A" }}
+                    </td>
+                    <td style="padding: 0.75rem 0.5rem;">
+                        <a href="{% url 'claims:verify_pickup' %}" class="btn btn-outline btn-sm">Verify Code</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- Recent Listings -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h2 style="font-size: 1.5rem; color: var(--ink);">My Recent Food Listings</h2>
+    <a href="{% url 'listings:donor_listings' %}" class="btn btn-outline btn-sm">View All Listings &rarr;</a>
+</div>
+
+{% if recent_listings %}
+<div class="grid grid-3">
+    {% for listing in recent_listings %}
+        {% include 'listings/listing_card.html' with listing=listing is_donor_view=True %}
+    {% endfor %}
+</div>
+{% else %}
+<div class="card" style="text-align: center; padding: 3rem;">
+    <p style="color: var(--grey-500); font-size: 1.1rem; margin-bottom: 1.5rem;">You have not posted any food donations yet.</p>
+    <a href="{% url 'listings:donor_listing_create' %}" class="btn btn-primary">+ Post Your First Donation</a>
+</div>
+{% endif %}
+{% endblock %}

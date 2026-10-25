@@ -1,0 +1,61 @@
+<div class="card {% if listing.status == 'expired' or listing.is_expired %}card-expired{% endif %}">
+
+        {% with cover=listing.photos.all|first %}
+        {% if cover %}
+            <img src="{{ cover.image.url }}"
+                 alt="{{ listing.food_name }}"
+                 class="food-card-photo"
+                 loading="lazy">
+        {% else %}
+            <div class="food-photo-placeholder food-card-photo">
+                No photo added
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="card-header">
+        <div>
+            <h3 class="card-title">{{ listing.food_name }}</h3>
+            <span class="card-subtitle">by {{ listing.donor.user.full_name }}</span>
+        </div>
+        <div>
+            <!-- Status Badge -->
+            <span class="badge badge-{{ listing.status }}">{{ listing.get_status_display }}</span>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <p style="font-size: 0.95rem; color: var(--grey-700); margin-bottom: 0.75rem;">
+            {{ listing.description|default:"No special description provided."|truncatechars:100 }}
+        </p>
+
+        <div class="food-meta">
+            <div class="food-meta-item">
+                <span>📦</span>
+                <span><strong>{{ listing.quantity_available|floatformat:2 }}</strong> of {{ listing.quantity|floatformat:2 }} {{ listing.unit }} available</span>
+            </div>
+            <div class="food-meta-item">
+                <span>📍</span>
+                <span>{{ listing.location.area }}, {{ listing.location.city }}</span>
+            </div>
+            <div class="food-meta-item">
+                <span>⏳</span>
+                <span class="countdown" data-expires="{{ listing.expires_at|date:'c' }}">
+                    Calculating...
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        {% if is_donor_view %}
+            <a href="{% url 'listings:donor_listing_detail' pk=listing.pk %}" class="btn btn-secondary btn-sm" style="width: 100%;">
+                Manage & View Claims &rarr;
+            </a>
+        {% else %}
+            <a href="{% url 'listings:food_detail' pk=listing.pk %}" class="btn btn-primary btn-sm btn-claim" style="width: 100%;">
+                View Food & Claim &rarr;
+            </a>
+        {% endif %}
+    </div>
+</div>

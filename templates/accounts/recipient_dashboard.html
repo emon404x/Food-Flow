@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Recipient Dashboard — FoodFlow{% endblock %}
+
+{% block content %}
+
+<!-- Recipient welcome banner -->
+<div style="
+    margin-bottom: 2rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border-radius: 22px;
+    background: rgb(44 76 64);
+">
+
+    <p style="
+        margin: 0 0 0.8rem;
+        color: #bedcc5;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+    ">
+        RECIPIENT DASHBOARD
+    </p>
+
+    <h1 style="
+        margin: 0 0 1rem;
+        color: #ffffff;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 700;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    ">
+        Welcome, {{ request.user.full_name }}
+    </h1>
+
+    <p style="
+        max-width: 800px;
+        margin: 0;
+        color: #dce9df;
+        font-size: 1rem;
+        line-height: 1.85;
+    ">
+        Find available food donations, claim the quantity
+        you need, and keep track of your pickups.
+        Together, we can help good food reach the right people.
+    </p>
+
+    <div style="margin-top: 1.25rem;">
+        {% if recipient.is_verified %}
+            <span style="
+                display: inline-block;
+                padding: 0.35rem 0.8rem;
+                border: 1px solid #91be9f;
+                border-radius: 30px;
+                background: #254f3f;
+                color: #e3f4dd;
+                font-size: 0.8rem;
+                font-weight: 600;
+            ">
+                ✓ Verified · Eligible to Claim
+            </span>
+        {% else %}
+            <span style="
+                display: inline-block;
+                padding: 0.35rem 0.8rem;
+                border: 1px solid #d9bd78;
+                border-radius: 30px;
+                background: #50462d;
+                color: #fff0c2;
+                font-size: 0.8rem;
+                font-weight: 600;
+            ">
+                Pending Admin Verification
+            </span>
+        {% endif %}
+    </div>
+
+</div>
+
+
+{% if not recipient.is_verified %}
+<div class="alert alert-warning">
+    <div>
+        <strong>Verification Required:</strong> Your account is currently pending administrator verification. 
+        You can browse nearby food listings, but you will only be able to submit claims once an admin verifies your profile.
+    </div>
+</div>
+{% endif %}
+
+
+<!-- Metrics Overview -->
+<div class="grid grid-3" style="margin-bottom: 2.5rem;">
+    <div class="stat-card">
+        <span class="stat-value">{{ nearby_food_count }}</span>
+        <span class="stat-label">Available in {{ recipient.location.city }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ pending_claims_count }}</span>
+        <span class="stat-label">Active Claims Awaiting Pickup</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ completed_claims_count }}</span>
+        <span class="stat-label">Completed Food Pickups</span>
+    </div>
+</div>
+
+<!-- Active Claims Section -->
+{% if pending_claims %}
+<div class="card" style="margin-bottom: 2.5rem; border-left: 4px solid var(--green-700);">
+    <div class="card-header">
+        <h3 class="card-title" style="color: var(--green-700);">Active Reserved Food & Pickup Codes</h3>
+        <a href="{% url 'claims:my_claims' %}" class="btn btn-outline btn-sm">View All Claims &rarr;</a>
+    </div>
+    <div class="grid grid-2" style="margin-top: 1rem;">
+        {% for claim in pending_claims %}
+        <div style="background: var(--green-50); border: 1px solid var(--green-700); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h4 style="color: var(--ink);">{{ claim.listing.food_name }}</h4>
+                <span class="badge badge-claimed">Pending</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--grey-700); margin: 0.5rem 0;">
+                Reserved: <strong>{{ claim.claimed_quantity|floatformat:2 }} {{ claim.listing.unit }}</strong> from {{ claim.listing.donor.user.full_name }}
+            </p>
+            <p style="font-size: 0.9rem; color: var(--grey-700);">
+                Pickup at: <em>{{ claim.listing.location.address }}, {{ claim.listing.location.area }}</em>
+            </p>
+            <div class="pickup-code-box" style="margin: 0.75rem 0; padding: 0.75rem;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--grey-500); font-weight: 700;">Show this code to donor:</div>
+                <div class="pickup-code-display" style="font-size: 1.6rem;">{{ claim.pickup_code }}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.85rem; color: var(--red-600); font-weight: 600;">
+                    Deadline: {{ claim.pickup_deadline|date:"M d, h:i A" }}
+                </span>
+                <a href="{% url 'claims:claim_detail' pk=claim.pk %}" class="btn btn-secondary btn-sm">Claim Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Nearby Available Food -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h2 style="font-size: 1.5rem; color: var(--ink);">Fresh & Available Food Donations</h2>
+    <a href="{% url 'listings:browse_food' %}" class="btn btn-outline btn-sm">Browse All &rarr;</a>
+</div>
+
+{% if recent_available %}
+<div class="grid grid-3">
+    {% for listing in recent_available %}
+        {% include 'listings/listing_card.html' with listing=listing is_recipient_view=True %}
+    {% endfor %}
+</div>
+{% else %}
+<div class="card" style="text-align: center; padding: 3rem;">
+    <p style="color: var(--grey-500); font-size: 1.1rem;">No available food donations in your area right now.</p>
+    <p style="color: var(--grey-500); font-size: 0.9rem; margin-top: 0.5rem;">You will receive an in-app notification as soon as a donor posts new food.</p>
+</div>
+{% endif %}
+
+{% endblock %}

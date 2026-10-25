@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login — FoodFlow{% endblock %}
+
+{% block content %}
+<section style="
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 75vh;
+    padding: 2.5rem 1rem;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #294335;
+">
+
+    <!-- Your food-sharing photo: blurred background -->
+    <div aria-hidden="true" style="
+        position: absolute;
+        inset: -20px;
+        z-index: -2;
+        background-image: url('{% static 'images/giveaway.jpg' %}');
+        background-size: cover;
+        background-position: center;
+        filter: blur(0px);
+    "></div>
+
+    <!-- Dark overlay -->
+    <div aria-hidden="true" style="
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: rgba(10, 28, 18, 0.4);
+    "></div>
+
+    <!-- Login box -->
+    <div style="
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 440px;
+        padding: clamp(1.5rem, 4vw, 2.5rem);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 20px;
+        background: rgba(25, 48, 33, 0.82);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    ">
+
+        <div style="text-align: center; margin-bottom: 1.75rem;">
+            <h1 style="
+                margin: 0 0 0.5rem;
+                color: #ffffff;
+                font-size: 2rem;
+                font-weight: 800;
+            ">
+                FoodFlow
+            </h1>
+
+            <p style="
+                margin: 0 0 1.5rem;
+                color: #d5e6ca;
+                font-size: 0.7rem;
+                font-weight: 700;
+                letter-spacing: 2px;
+            ">
+                FOOD · PEOPLE · COMMUNITY
+            </p>
+
+            <h2 style="
+                margin: 0 0 0.5rem;
+                color: #ffffff;
+                font-size: 1.4rem;
+            ">
+                Welcome Back
+            </h2>
+
+            <p style="
+                margin: 0;
+                color: #e1e9dc;
+                font-size: 0.9rem;
+                line-height: 1.7;
+            ">
+                Sign in to continue sharing food
+                and supporting your community.
+            </p>
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if request.GET.next %}
+                <input type="hidden"
+                       name="next"
+                       value="{{ request.GET.next }}">
+            {% elif request.POST.next %}
+                <input type="hidden"
+                       name="next"
+                       value="{{ request.POST.next }}">
+            {% endif %}
+
+            {% if form.non_field_errors %}
+                <div role="alert" style="
+                    margin-bottom: 1.25rem;
+                    padding: 0.85rem;
+                    border-radius: 8px;
+                    background: #fff0ec;
+                    color: #8d2820;
+                    font-size: 0.9rem;
+                ">
+                    {% for error in form.non_field_errors %}
+                        <p style="margin: 0;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div style="margin-bottom: 1.25rem;">
+                <label for="{{ form.username.id_for_label }}"
+                       style="
+                           display: block;
+                           margin-bottom: 0.5rem;
+                           color: #ffffff;
+                           font-size: 0.9rem;
+                           font-weight: 600;
+                       ">
+                    Username or Email
+                </label>
+
+                <input type="text"
+                       id="{{ form.username.id_for_label }}"
+                       name="{{ form.username.html_name }}"
+                       value="{{ form.username.value|default_if_none:'' }}"
+                       placeholder="Enter your username or email"
+                       autocomplete="username"
+                       autocapitalize="none"
+                       spellcheck="false"
+                       required
+                       style="
+                           box-sizing: border-box;
+                           width: 100%;
+                           min-height: 50px;
+                           padding: 12px 14px;
+                           border: 1px solid #d4dfd1;
+                           border-radius: 8px;
+                           background: #ffffff;
+                           color: #203729;
+                           font: inherit;
+                       ">
+
+                {% for error in form.username.errors %}
+                    <p style="
+                        margin: 0.5rem 0 0;
+                        color: #ffe0d9;
+                        font-size: 0.85rem;
+                    ">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label for="{{ form.password.id_for_label }}"
+                       style="
+                           display: block;
+                           margin-bottom: 0.5rem;
+                           color: #ffffff;
+                           font-size: 0.9rem;
+                           font-weight: 600;
+                       ">
+                    Password
+                </label>
+
+                <input type="password"
+                       id="{{ form.password.id_for_label }}"
+                       name="{{ form.password.html_name }}"
+                       placeholder="Enter your password"
+                       autocomplete="current-password"
+                       required
+                       style="
+                           box-sizing: border-box;
+                           width: 100%;
+                           min-height: 50px;
+                           padding: 12px 14px;
+                           border: 1px solid #d4dfd1;
+                           border-radius: 8px;
+                           background: #ffffff;
+                           color: #203729;
+                           font: inherit;
+                       ">
+
+                {% for error in form.password.errors %}
+                    <p style="
+                        margin: 0.5rem 0 0;
+                        color: #ffe0d9;
+                        font-size: 0.85rem;
+                    ">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <button type="submit" style="
+                width: 100%;
+                min-height: 50px;
+                padding: 12px 18px;
+                border: 1px solid #478b50;
+                border-radius: 8px;
+                background: #307a3d;
+                color: #ffffff;
+                font: inherit;
+                font-weight: 700;
+                cursor: pointer;
+            ">
+                Sign In
+            </button>
+        </form>
+
+        <p style="
+            margin: 1.5rem 0 0;
+            color: #e1e9dc;
+            text-align: center;
+            font-size: 0.9rem;
+        ">
+            Don't have an account?
+            <a href="{% url 'accounts:register' %}"
+               style="
+                   color: #e0f4bd;
+                   font-weight: 700;
+                   text-decoration: underline;
+                   text-underline-offset: 3px;
+               ">
+                Register now
+            </a>
+        </p>
+
+        <p style="
+            margin: 1.5rem 0 0;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: #d5e6ca;
+            text-align: center;
+            font-size: 0.8rem;
+        ">
+            Good food deserves to be shared.
+        </p>
+
+    </div>
+</section>
+{% endblock %}

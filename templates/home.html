@@ -1,0 +1,1146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FoodFlow — Expiry-Aware Food Donation Platform{% endblock %}
+{% block extra_css %}
+<style>
+    body {
+        background-color: #f4f3e8;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+
+<!-- Homepage image banner -->
+<section style="
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 460px;
+    padding: clamp(2rem, 6vw, 5rem) 1.5rem;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #234432;
+    text-align: center;
+">
+
+    <!-- Background photo -->
+    <div aria-hidden="true" style="
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background-image: url('{% static 'images/a.jpg' %}');
+        background-size: cover;
+        background-position: center;
+    "></div>
+
+    <!-- Dark overlay -->
+    <div aria-hidden="true" style="
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: rgba(8, 25, 15, 0.70);
+    "></div>
+
+    <!-- Text and existing buttons -->
+    <div style="width: 100%; max-width: 900px;">
+
+        <p style="
+            margin-bottom: 1rem;
+            color: #82ca6e;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+        ">
+            LESS WASTE. MORE SHARING.
+        </p>
+
+        <h1 style="
+            margin: 0 0 1.5rem;
+            color: #ffffff;
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+        ">
+            Bridging Surplus Food to Those in Need —
+            Before It Expires.
+        </h1>
+
+        <p style="
+            max-width: 720px;
+            margin: 0 auto 2rem;
+            color: #f0f4ec;
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            line-height: 1.8;
+        ">
+            FoodFlow connects restaurants, grocers and households
+            with verified recipients, including charities, shelters
+            and individuals, to share surplus food before it expires.
+        </p>
+
+        <div style="
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        ">
+            <a href="{% url 'accounts:register' %}"
+               class="btn btn-primary btn-lg"
+               style="
+                   padding: 0.9rem 1.8rem;
+                   border: 1px solid #327a47;
+                   border-radius: 9px;
+                   background: #27683c;
+                   color: #ffffff;
+                   font-weight: 700;
+               ">
+                Get Started / Register
+            </a>
+
+            <a href="{% url 'accounts:login' %}"
+               class="btn btn-outline btn-lg"
+               style="
+                   padding: 0.9rem 1.8rem;
+                   border: 1px solid #ffffff;
+                   border-radius: 9px;
+                   background: rgba(0, 0, 0, 0.2);
+                   color: #ffffff;
+                   font-weight: 900;
+               ">
+                Log In
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section style="
+    margin: 3rem 0;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border-radius: 20px;
+    background: #fcfaf5;
+">
+
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <p style="
+            margin-bottom: 0.75rem;
+            color: #718174;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        ">
+            A SIMPLE JOURNEY OF SHARING
+        </p>
+
+        <h2 style="
+            margin-bottom: 0.75rem;
+            color: #183d2c;
+            font-size: clamp(1.7rem, 3vw, 2.3rem);
+            line-height: 1.2;
+        ">
+            How FoodFlow Works
+        </h2>
+
+        <p style="margin: 0; color: #687369; line-height: 1.8;">
+            From surplus food to someone's table, before it expires.
+        </p>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+        gap: 1rem;
+    ">
+
+        <!-- Step 1 -->
+        <article style="
+            padding: 1.5rem;
+            border: 1px solid #dfe6dc;
+            border-radius: 17px;
+            background: #ffffff;
+        ">
+            <p style="
+                margin: 0 0 1rem;
+                color: #78877a;
+                text-align: right;
+                font-size: 0.8rem;
+                font-weight: 700;
+            ">01</p>
+
+            <div aria-hidden="true" style="
+                display: inline-flex;
+                padding: 0.75rem;
+                margin-bottom: 1.25rem;
+                border-radius: 12px;
+                background: #eaf4ee;
+                color: #277650;
+            ">
+                <svg width="25" height="25" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.7" stroke-linejoin="round">
+                    <path d="m12 3 9 5-9 5-9-5Z"/>
+                    <path d="M3 8v9l9 5 9-5V8M12 13v9"/>
+                </svg>
+            </div>
+
+            <h3 style="
+                margin-bottom: 0.75rem;
+                color: #203e2d;
+                font-size: 1.15rem;
+            ">
+                Post Surplus Food
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #687369;
+                font-size: 0.9rem;
+                line-height: 1.85;
+            ">
+                Donors list suitable surplus food with its
+                quantity, expiry time and pickup location.
+            </p>
+        </article>
+
+        <!-- Step 2 -->
+        <article style="
+            padding: 1.5rem;
+            border: 1px solid #dfe6dc;
+            border-radius: 17px;
+            background: #ffffff;
+        ">
+            <p style="
+                margin: 0 0 1rem;
+                color: #78877a;
+                text-align: right;
+                font-size: 0.8rem;
+                font-weight: 700;
+            ">02</p>
+
+            <div aria-hidden="true" style="
+                display: inline-flex;
+                padding: 0.75rem;
+                margin-bottom: 1.25rem;
+                border-radius: 12px;
+                background: #eaf4ee;
+                color: #277650;
+            ">
+                <svg width="25" height="25" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                    <path d="M10 21h4"/>
+                </svg>
+            </div>
+
+            <h3 style="
+                margin-bottom: 0.75rem;
+                color: #203e2d;
+                font-size: 1.15rem;
+            ">
+                Local Alerts
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #687369;
+                font-size: 0.9rem;
+                line-height: 1.85;
+            ">
+                Matching verified recipients receive
+                in-app alerts based on the donation's
+                area and city.
+            </p>
+        </article>
+
+        <!-- Step 3 -->
+        <article style="
+            padding: 1.5rem;
+            border: 1px solid #dfe6dc;
+            border-radius: 17px;
+            background: #ffffff;
+        ">
+            <p style="
+                margin: 0 0 1rem;
+                color: #78877a;
+                text-align: right;
+                font-size: 0.8rem;
+                font-weight: 700;
+            ">03</p>
+
+            <div aria-hidden="true" style="
+                display: inline-flex;
+                padding: 0.75rem;
+                margin-bottom: 1.25rem;
+                border-radius: 12px;
+                background: #eaf4ee;
+                color: #277650;
+            ">
+                <svg width="25" height="25" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <rect x="5" y="4" width="14" height="17" rx="2"/>
+                    <path d="M9 3h6v4H9ZM9 12h6M9 16h4"/>
+                </svg>
+            </div>
+
+            <h3 style="
+                margin-bottom: 0.75rem;
+                color: #203e2d;
+                font-size: 1.15rem;
+            ">
+                Claim a Portion
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #687369;
+                font-size: 0.9rem;
+                line-height: 1.85;
+            ">
+                Verified recipients review available food,
+                claim the quantity they need and receive
+                a pickup code.
+            </p>
+        </article>
+
+        <!-- Step 4 -->
+        <article style="
+            padding: 1.5rem;
+            border: 1px solid #dfe6dc;
+            border-radius: 17px;
+            background: #ffffff;
+        ">
+            <p style="
+                margin: 0 0 1rem;
+                color: #78877a;
+                text-align: right;
+                font-size: 0.8rem;
+                font-weight: 700;
+            ">04</p>
+
+            <div aria-hidden="true" style="
+                display: inline-flex;
+                padding: 0.75rem;
+                margin-bottom: 1.25rem;
+                border-radius: 12px;
+                background: #eaf4ee;
+                color: #277650;
+            ">
+                <svg width="25" height="25" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+            </div>
+
+            <h3 style="
+                margin-bottom: 0.75rem;
+                color: #203e2d;
+                font-size: 1.15rem;
+            ">
+                Arrive for Pickup
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #687369;
+                font-size: 0.9rem;
+                line-height: 1.85;
+            ">
+                Recipients visit the listed pickup
+                location before their deadline,
+                with their pickup code ready.
+            </p>
+        </article>
+
+        <!-- Step 5 -->
+        <article style="
+            padding: 1.5rem;
+            border: 1px solid #dfe6dc;
+            border-radius: 17px;
+            background: #ffffff;
+        ">
+            <p style="
+                margin: 0 0 1rem;
+                color: #78877a;
+                text-align: right;
+                font-size: 0.8rem;
+                font-weight: 700;
+            ">05</p>
+
+            <div aria-hidden="true" style="
+                display: inline-flex;
+                padding: 0.75rem;
+                margin-bottom: 1.25rem;
+                border-radius: 12px;
+                background: #eaf4ee;
+                color: #277650;
+            ">
+                <svg width="25" height="25" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="m8 12 3 3 5-6"/>
+                </svg>
+            </div>
+
+            <h3 style="
+                margin-bottom: 0.75rem;
+                color: #203e2d;
+                font-size: 1.15rem;
+            ">
+                Verify & Complete
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #687369;
+                font-size: 0.9rem;
+                line-height: 1.85;
+            ">
+                The donor enters the recipient's code
+                to confirm the pickup and mark
+                the claim as completed.
+            </p>
+        </article>
+
+    </div>
+
+    <!-- Donation journey -->
+    <div style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 1.75rem;
+        padding: 1.25rem;
+        border-radius: 14px;
+        background: #103e2c;
+        color: #e4efdf;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    ">
+        <span>DONOR</span>
+        <span aria-hidden="true" style="color: #9bc4a7;">→</span>
+        <span>FOOD DONATION</span>
+        <span aria-hidden="true" style="color: #9bc4a7;">→</span>
+        <span>RECIPIENT CLAIM</span>
+        <span aria-hidden="true" style="color: #9bc4a7;">→</span>
+        <span>PICKUP</span>
+        <span aria-hidden="true" style="color: #9bc4a7;">→</span>
+        <span>VERIFIED HANDOVER</span>
+    </div>
+
+</section>
+
+
+
+<!-- Live Impact Metrics -->
+<section style="margin: 2.5rem 0;">
+    <div class="grid grid-4">
+        <div class="stat-card"
+            style="background: #e8f3e9; border: 1px solid #c7dfcb;">
+            <span class="stat-value">{{ active_available }}</span>
+            <span class="stat-label">Active Food Listings</span>
+        </div>
+        <div class="stat-card"
+             style="background: #fff3dc; border: 1px solid #eed9ad;">
+            <span class="stat-value">{{ completed_rescues }}</span>
+            <span class="stat-label">Successful Pickups</span>
+        </div>
+        <div class="stat-card"
+            style="background: #eaf2fc; border: 1px solid #cbdcf0;">
+            <span class="stat-value">{{ total_listings }}</span>
+            <span class="stat-label">Total Donations Posted</span>
+        </div>
+        <div class="stat-card"
+             style="background: #f1ebfa; border: 1px solid #ddcfed;">
+            <span class="stat-value">{{ verified_donors }}</span>
+            <span class="stat-label">Verified Donors</span>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Available Listings Preview -->
+{% if recent_listings %}
+<section style="margin: 3rem 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.6rem; color: var(--ink);">Recently Available Food</h2>
+        {% if user.is_authenticated %}
+            <a href="{% url 'listings:browse_food' %}" class="btn btn-outline btn-sm">View All Available &rarr;</a>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-3">
+        {% for listing in recent_listings %}
+            {% include 'listings/listing_card.html' with listing=listing %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+
+<!-- Community introduction -->
+<section style="margin: 3rem 0; padding: clamp(1.25rem, 4vw, 3rem); background: #ffffff; border: 1px solid #e2eae4; border-radius: 22px;">
+
+    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 2.5rem;">
+
+        <div style="flex: 1 1 300px; min-width: 0;">
+            <!-- Replace the URL below with your own image link -->
+            <img src="{% static 'images/donation.jpg' %}"
+                 alt="People sharing food with their community"
+                 loading="lazy"
+                 style="display: block; width: 100%; height: 380px; object-fit: cover; border-radius: 18px;">
+        </div>
+
+        <div style="flex: 1 1 300px; min-width: 0;">
+            <p style="margin-bottom: 1rem; color: #26734d; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;">
+                FOOD SHARED. COMMUNITIES SUPPORTED.
+            </p>
+
+            <h2 style="margin-bottom: 1.25rem; color: #183b2c; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.2;">
+                Helping good food reach people who need it.
+            </h2>
+
+            <p style="color: #647067; font-size: 1rem; line-height: 1.9;">
+                FoodFlow connects restaurants, grocers and households
+                with verified recipients, including NGOs and charities.
+                By sharing surplus food with clear quantity, expiry
+                and pickup details, donors help others arrange
+                collection before good food goes to waste.
+            </p>
+
+            <ul style="display: grid; gap: 1rem; margin: 1.5rem 0 0; padding: 0; list-style: none; color: #365443;">
+                <li>
+                    <span aria-hidden="true" style="color: #238252; margin-right: 0.5rem;">✓</span>
+                    Share surplus food with clear details
+                </li>
+
+                <li>
+                    <span aria-hidden="true" style="color: #238252; margin-right: 0.5rem;">✓</span>
+                    Claim the quantity you need
+                </li>
+
+                <li>
+                    <span aria-hidden="true" style="color: #238252; margin-right: 0.5rem;">✓</span>
+                    Confirm collection with a pickup code
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Small actions, meaningful impact -->
+<section style="
+    margin: 3rem 0;
+    padding: clamp(1.25rem, 4vw, 3rem);
+    background: #436140;
+    border-radius: 22px;
+">
+
+    <div style="
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    ">
+        <div style="flex: 1 1 300px;">
+            <p style="
+                margin-bottom: 0.75rem;
+                color: #ffffff;
+                font-size: 0.9rem;
+                font-weight: 700;
+                letter-spacing: 2px;
+            ">
+                WHY FOODFLOW
+            </p>
+
+            <h2 style="
+                margin: 0;
+                color: #000000;
+                font-size: clamp(1.8rem, 3vw, 2.5rem);
+                line-height: 1.2;
+            ">
+                Small actions.<br>
+                Meaningful impact.
+            </h2>
+        </div>
+
+        <p style="
+            flex: 1 1 300px;
+            max-width: 550px;
+            margin: 0;
+            color: #b8d5be;
+            font-size: 1.3rem;
+            line-height: 1.9;
+        ">
+            A simpler way to connect surplus food with local needs,
+            from posting a donation to confirming pickup.
+            Every thoughtful act of sharing can help
+            good food find a purpose.
+        </p>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+        gap: 1.25rem;
+    ">
+
+        <!-- Photo card 1 -->
+        <article style="
+            overflow: hidden;
+            border: 1px solid #d7e6dc;
+            border-radius: 18px;
+            background: #ffffff;
+        ">
+            <img src="{% static 'images/less-waste.jpg' %}"
+                 alt="Fresh food suitable for sharing"
+                 loading="lazy"
+                 style="
+                     display: block;
+                     width: 100%;
+                     height: 220px;
+                     object-fit: cover;
+                 ">
+
+            <div style="padding: 1.5rem;">
+                <h3 style="
+                    margin-bottom: 0.75rem;
+                    color: #234532;
+                    font-size: 1.2rem;
+                ">
+                    Less food waste
+                </h3>
+
+                <p style="
+                    margin: 0;
+                    color: #647067;
+                    font-size: 0.95rem;
+                    line-height: 1.8;
+                ">
+                    Give suitable surplus food a chance to be
+                    used before it expires.
+                </p>
+            </div>
+        </article>
+
+        <!-- Photo card 2 -->
+        <article style="
+            overflow: hidden;
+            border: 1px solid #d7e6dc;
+            border-radius: 18px;
+            background: #ffffff;
+        ">
+            <img src="{% static 'images/community.jpg' %}"
+                 alt="People coming together to share food"
+                 loading="lazy"
+                 style="
+                     display: block;
+                     width: 100%;
+                     height: 220px;
+                     object-fit: cover;
+                 ">
+
+            <div style="padding: 1.5rem;">
+                <h3 style="
+                    margin-bottom: 0.75rem;
+                    color: #234532;
+                    font-size: 1.2rem;
+                ">
+                    Community connections
+                </h3>
+
+                <p style="
+                    margin: 0;
+                    color: #647067;
+                    font-size: 0.95rem;
+                    line-height: 1.8;
+                ">
+                    Bring donors, verified recipients and
+                    NGOs together in one place.
+                </p>
+            </div>
+        </article>
+
+        <!-- Photo card 3 -->
+        <article style="
+            overflow: hidden;
+            border: 1px solid #d7e6dc;
+            border-radius: 18px;
+            background: #ffffff;
+        ">
+            <img src="{% static 'images/food-sharing.jpg' %}"
+                 alt="Food being prepared and packed for sharing"
+                 loading="lazy"
+                 style="
+                     display: block;
+                     width: 100%;
+                     height: 220px;
+                     object-fit: cover;
+                 ">
+
+            <div style="padding: 1.5rem;">
+                <h3 style="
+                    margin-bottom: 0.75rem;
+                    color: #234532;
+                    font-size: 1.2rem;
+                ">
+                    Expiry-aware sharing
+                </h3>
+
+                <p style="
+                    margin: 0;
+                    color: #647067;
+                    font-size: 0.95rem;
+                    line-height: 1.8;
+                ">
+                    Review expiry times and pickup details
+                    before claiming a donation.
+                </p>
+            </div>
+        </article>
+
+        <!-- Photo card 4 -->
+        <article style="
+            overflow: hidden;
+            border: 1px solid #d7e6dc;
+            border-radius: 18px;
+            background: #ffffff;
+        ">
+            <img src="{% static 'images/pickup.jpg' %}"
+                 alt="A food donation being handed to a recipient"
+                 loading="lazy"
+                 style="
+                     display: block;
+                     width: 100%;
+                     height: 220px;
+                     object-fit: cover;
+                 ">
+
+            <div style="padding: 1.5rem;">
+                <h3 style="
+                    margin-bottom: 0.75rem;
+                    color: #234532;
+                    font-size: 1.2rem;
+                ">
+                    Verified pickup
+                </h3>
+
+                <p style="
+                    margin: 0;
+                    color: #647067;
+                    font-size: 0.95rem;
+                    line-height: 1.8;
+                ">
+                    Confirm the food handover using
+                    the recipient's pickup code.
+                </p>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+
+
+<!-- Donor community section -->
+<section style="
+    margin: 3rem 0;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    background: #183b2c;
+    border: 1px solid #dfe9e1;
+    border-radius: 20px;
+">
+
+    <div style="max-width: 760px; margin-bottom: 2rem;">
+        <p style="
+            margin-bottom: 0.75rem;
+            color: #84ffbc;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        ">
+            SHARE FOOD. SHARE KINDNESS.
+        </p>
+
+        <h2 style="
+            margin-bottom: 1rem;
+            color: #57af8d;
+            font-size: clamp(1.7rem, 3vw, 2.3rem);
+            line-height: 1.25;
+        ">
+            Who can be a donor?
+        </h2>
+
+        <p style="
+            margin: 0;
+            color: #f8fff9;
+            font-size: 1.243rem;
+            line-height: 1.9;
+        ">
+            A restaurant with extra prepared meals. A grocery shop with surplus produce. A household with more food than
+            it needs. FoodFlow gives donors a way to share suitable,
+            unexpired food with verified recipients instead of
+            letting it go to waste.
+        </p>
+    </div>
+
+    <div style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    ">
+
+        <article style="
+            flex: 1 1 200px;
+            padding: 1.25rem;
+            border-radius: 14px;
+            background: #edf6ef;
+        ">
+            <h3 style="
+                margin-bottom: 0.5rem;
+                color: #244b35;
+                font-size: 1.2rem;
+            ">
+                Restaurants & Food Businesses
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #617066;
+                font-size: 0.9rem;
+                line-height: 1.8;
+            ">
+                Share suitable extra meals with clear preparation,
+                quantity and expiry details.
+            </p>
+        </article>
+
+        <article style="
+            flex: 1 1 200px;
+            padding: 1.25rem;
+            border-radius: 14px;
+            background: #faf2e7;
+        ">
+            <h3 style="
+                margin-bottom: 0.5rem;
+                color: #244b35;
+                font-size: 1.2rem;
+            ">
+                Grocers & Local Shops
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #617066;
+                font-size: 0.9rem;
+                line-height: 1.8;
+            ">
+                Give surplus fruits, vegetables and other
+                suitable food a chance to be used.
+            </p>
+        </article>
+
+        <article style="
+            flex: 1 1 200px;
+            padding: 1.25rem;
+            border-radius: 14px;
+            background: #eef3f7;
+        ">
+            <h3 style="
+                margin-bottom: 0.5rem;
+                color: #244b35;
+                font-size: 1.2rem;
+            ">
+                Households & Individuals
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #617066;
+                font-size: 0.9rem;
+                line-height: 1.8;
+            ">
+                Turn suitable extra food into a thoughtful
+                contribution to your community.
+            </p>
+        </article>
+
+    </div>
+
+    <!-- Change the filename below to use your own photo -->
+    <div style="
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+">
+    <img src="{% static 'images/restaurant2.jpg' %}"
+         alt="Food being prepared for donation"
+         loading="lazy"
+         style="
+             flex: 1 1 250px;
+             min-width: 0;
+             width: 100%;
+             height: 280px;
+             object-fit: cover;
+             border-radius: 16px;
+         ">
+
+    <img src="{% static 'images/restaurant3.jpg' %}"
+         alt="People sharing food donations"
+         loading="lazy"
+         style="
+             flex: 1 1 250px;
+             min-width: 0;
+             width: 100%;
+             height: 280px;
+             object-fit: cover;
+             border-radius: 16px;
+         ">
+</div>
+    <div style="
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        border-left: 4px solid #32764b;
+        border-radius: 0 12px 12px 0;
+        background: #f2f7f1;
+    ">
+        <h3 style="
+            margin-bottom: 0.5rem;
+            color: #244b35;
+            font-size: 1.1rem;
+        ">
+            A thoughtful donation starts with clear details.
+        </h3>
+
+        <p style="
+            margin: 0;
+            color: #617066;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        ">
+            Describe your food accurately, mention the available
+            quantity and expiry time, and provide a clear pickup
+            location. When the recipient arrives, verify their
+            pickup code to complete the handover.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- Recipient community section -->
+<section style="
+    margin: 3rem 0;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    background: #ffffff;
+    border: 1px solid #dfe9e1;
+    border-radius: 20px;
+">
+
+    <div style="max-width: 760px; margin-bottom: 2rem;">
+        <p style="
+            margin-bottom: 0.75rem;
+            color: #27734c;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        ">
+            GOOD FOOD. SHARED WITH PURPOSE.
+        </p>
+
+        <h2 style="
+            margin-bottom: 1rem;
+            color: #183b2c;
+            font-size: clamp(1.7rem, 3vw, 2.3rem);
+            line-height: 1.25;
+        ">
+            Who Can Be A Recipient?
+        </h2>
+
+        <p style="
+            margin: 0;
+            color: #617066;
+            font-size: 1rem;
+            line-height: 1.9;
+        ">
+            FoodFlow supports individuals seeking food for themselves
+            and organisations collecting food for others. NGOs,
+            charities and shelters can connect with donors to
+            support the communities they serve. Recipient accounts
+            must be verified before they can claim available food.
+        </p>
+    </div>
+
+    <div style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    ">
+
+        <article style="
+            flex: 1 1 200px;
+            padding: 1.25rem;
+            border-radius: 14px;
+            background: #edf6ef;
+        ">
+            <h3 style="
+                margin-bottom: 0.5rem;
+                color: #244b35;
+                font-size: 1rem;
+            ">
+                Individuals
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #617066;
+                font-size: 0.9rem;
+                line-height: 1.8;
+            ">
+                Find suitable food donations and claim
+                the quantity you need.
+            </p>
+        </article>
+
+        <article style="
+            flex: 1 1 200px;
+            padding: 1.25rem;
+            border-radius: 14px;
+            background: #faf2e7;
+        ">
+            <h3 style="
+                margin-bottom: 0.5rem;
+                color: #244b35;
+                font-size: 1rem;
+            ">
+                NGOs & Charities
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #617066;
+                font-size: 0.9rem;
+                line-height: 1.8;
+            ">
+                Collect suitable donations to support
+                people in the communities you serve.
+            </p>
+        </article>
+
+        <article style="
+            flex: 1 1 200px;
+            padding: 1.25rem;
+            border-radius: 14px;
+            background: #eef3f7;
+        ">
+            <h3 style="
+                margin-bottom: 0.5rem;
+                color: #244b35;
+                font-size: 1rem;
+            ">
+                Shelters & Community Support
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #617066;
+                font-size: 0.9rem;
+                line-height: 1.8;
+            ">
+                Connect with food donors and arrange
+                collection for those you support.
+            </p>
+        </article>
+
+    </div>
+
+
+    <div style="
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+     ">
+    <img src="{% static 'images/volunteer2.jpg' %}"
+         alt="Food being prepared for donation"
+         loading="lazy"
+         style="
+             flex: 1 1 250px;
+             min-width: 0;
+             width: 100%;
+             height: 280px;
+             object-fit: cover;
+             border-radius: 16px;
+         ">
+
+    <img src="{% static 'images/15a.jpg' %}"
+         alt="People sharing food donations"
+         loading="lazy"
+         style="
+             flex: 1 1 250px;
+             min-width: 0;
+             width: 100%;
+             height: 280px;
+             object-fit: cover;
+             border-radius: 16px;
+         ">
+
+
+    </div>
+
+    <div style="
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        border-left: 4px solid #32764b;
+        border-radius: 0 12px 12px 0;
+        background: #f2f7f1;
+    ">
+        <h3 style="
+            margin-bottom: 0.5rem;
+            color: #244b35;
+            font-size: 1.1rem;
+        ">
+            Collect with care. Share responsibly.
+        </h3>
+
+        <p style="
+            margin: 0;
+            color: #617066;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        ">
+            Check the description, expiry time and pickup location
+            before claiming. Claim only what you can collect and
+            use, arrive before the food expires, and keep your
+            pickup code ready to show the donor.
+        </p>
+    </div>
+
+</section>
+
+
+{% endblock %}

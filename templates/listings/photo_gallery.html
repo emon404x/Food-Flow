@@ -1,0 +1,30 @@
+{% with photos=listing.photos.all %}
+<div class="food-photo-gallery">
+    {% with cover=photos|first %}
+        {% if cover %}
+            <img src="{{ cover.image.url }}"
+                 alt="{{ listing.food_name }}"
+                 class="food-detail-photo">
+
+            {% if photos|length > 1 %}
+                <div class="food-photo-thumbnails">
+                    {% for photo in photos %}
+                        <button type="button"
+                                class="food-photo-thumbnail {% if forloop.first %}is-selected{% endif %}"
+                                aria-label="View photo {{ forloop.counter }}"
+                                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+                            <img src="{{ photo.image.url }}"
+                                 alt="{{ photo.caption|default:listing.food_name }}"
+                                 loading="lazy">
+                        </button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="food-photo-placeholder food-detail-photo">
+                No photo added
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+{% endwith %}

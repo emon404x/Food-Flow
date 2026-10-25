@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if is_edit %}Edit Photo{% else %}Add Photo{% endif %} — FoodFlow{% endblock %}
+
+{% block content %}
+<div class="form-card" style="max-width: 650px;">
+
+    <h2 style="color: var(--green-700); text-align: center; margin-bottom: 0.5rem;">
+        {% if is_edit %}Edit Food Photo{% else %}Add Food Photo{% endif %}
+    </h2>
+
+    <p style="color: var(--grey-500); text-align: center; margin-bottom: 1.5rem;">
+        {{ listing.food_name }}
+    </p>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        {% for error in form.non_field_errors %}
+            <div class="form-error" style="margin-bottom: 1rem;">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% if is_edit %}
+            <div style="margin-bottom: 1.5rem;">
+                <p class="form-label">Current Photo</p>
+
+                <img src="{{ photo.image.url }}"
+                     alt="{{ photo.caption|default:listing.food_name }}"
+                     style="display: block; width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px;">
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.image.id_for_label }}">
+                {% if is_edit %}
+                    Replace Photo (Optional)
+                {% else %}
+                    Select Photo
+                {% endif %}
+            </label>
+
+            {{ form.image }}
+
+            <p class="form-help">
+                {{ form.image.help_text }}
+            </p>
+
+            {% if is_edit %}
+                <p class="form-help">
+                    Leave this empty to keep your current photo.
+                </p>
+            {% endif %}
+
+            {% for error in form.image.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.caption.id_for_label }}">
+                Caption (Optional)
+            </label>
+
+            {{ form.caption }}
+
+            {% for error in form.caption.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">
+                {% if is_edit %}Save Changes{% else %}Upload Photo{% endif %}
+            </button>
+
+            <a href="{% url 'listings:donor_photo_list' listing_id=listing.pk %}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
