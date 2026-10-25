@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "django",
-  "buildCommand": "python manage.py collectstatic --noinput"
+  "installCommand": "python3 -m pip install -r requirements.txt",
+  "buildCommand": "python3 -m pip install -r requirements.txt && python3 manage.py collectstatic --noinput"
 }
