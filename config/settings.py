@@ -128,10 +128,18 @@ if database_url:
         )
     }
 elif IS_VERCEL:
+    tmp_db = os.path.join(tempfile.gettempdir(), 'db.sqlite3')
+    source_db = os.path.join(BASE_DIR, 'db.sqlite3')
+    if os.path.exists(source_db) and (not os.path.exists(tmp_db) or os.path.getsize(tmp_db) < 1000):
+        try:
+            import shutil
+            shutil.copyfile(source_db, tmp_db)
+        except Exception:
+            pass
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(tempfile.gettempdir(), 'db.sqlite3'),
+            'NAME': tmp_db,
         }
     }
 else:
