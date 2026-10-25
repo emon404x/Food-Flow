@@ -4,6 +4,7 @@ Root URL Configuration for FoodFlow.
 
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.views.generic import RedirectView
 from accounts.views import home_view, login_view, register_view, logout_view
 from django.conf import settings
 from django.views.static import serve
@@ -14,6 +15,7 @@ urlpatterns = [
 
     # Public / Home
     path('', home_view, name='home'),
+    path('browse/', RedirectView.as_view(url='/recipient/food/', permanent=False)),
 
     # Direct Auth Shortcuts (Ensures both 'login' and 'accounts:login' resolve everywhere)
     path('login/', login_view, name='login'),
