@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from locations.models import Location
 from accounts.models import Donor, Recipient
-from listings.models import FoodListing
+from listings.models import FoodListing, FoodPhoto
 from claims.services import ClaimService
 
 User = get_user_model()
@@ -161,6 +161,21 @@ class Command(BaseCommand):
                 'status': FoodListing.STATUS_EXPIRED
             }
         )
+
+        # Attach real food photos to demo listings if not already added
+        photo_map = [
+            (l1, 'food_photos/2026/10/vegetable_biryani.jpg', 'Vegetable Biryani & Fresh Salad'),
+            (l2, 'food_photos/2026/10/sourdough_croissants.jpg', 'Artisan Sourdough & Butter Croissants'),
+            (l3, 'food_photos/2026/10/chicken_curry_rice.jpg', 'Hot Chicken Curry & Steamed Rice'),
+            (l4, 'food_photos/2026/10/fruit_salad.jpg', 'Fresh Fruit Salad Bowls'),
+        ]
+        for listing_obj, img_rel_path, cap in photo_map:
+            if not listing_obj.photos.exists():
+                FoodPhoto.objects.create(
+                    listing=listing_obj,
+                    image=img_rel_path,
+                    caption=cap
+                )
 
         # 6. Sample Claim: Hope Foundation claims 10 portions of Listing 1
         if l1.status == FoodListing.STATUS_AVAILABLE and l1.claims.count() == 0:
