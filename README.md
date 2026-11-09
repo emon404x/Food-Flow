@@ -1,5 +1,5 @@
 # FoodFlow — Expiry-Aware Food Donation Platform
-> **University CSE Lab & Capstone Project (Team of 4 Members)**  
+> **University CSE Lab & Capstone Project 
 > *Connecting surplus food donors with verified local charities before food expires.*
 
 ![Django](https://img.shields.io/badge/Django-5.0+-092E20?style=for-the-badge&logo=django&logoColor=white)
